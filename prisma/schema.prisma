@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+  profileId String
+  advanced  Boolean
+  profile   Profile  @relation(fields: [profileId], references: [id])
+}
+
+model Profile {
+  id        String  @id @default(uuid())
+  nickname  String  @unique
+  email     String  @unique
+  photo_url String
+  password  String
+  activated Boolean
+  advanced  Boolean
+  posts     Post[]
+
+  sentRequests     ProfileFriendship[] @relation("sentRequests")
+  receivedRequests ProfileFriendship[] @relation("receivedRequests")
+}
+
+model ProfileFriendship {
+  profileId String
+  friendId  String
+  createAt  DateTime @default(now())
+
+  profile Profile @relation("sentRequests", fields: [profileId], references: [id])
+  friend  Profile @relation("receivedRequests", fields: [friendId], references: [id])
+
+  @@id([profileId, friendId])
+}

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import PostController from "../controllers/PostController";
-import { validate } from "../utils/validate";
+import { validateBody, validateParams } from "../utils/validate";
 import { z } from 'zod'
 
 const router = Router();
@@ -12,7 +12,12 @@ const PostSchema = z.object({
     isAdvanced: z.boolean()
 })
 
+const PostIdSchema = z.object({
+    id: z.string().uuid()
+});
+
 router.get("/", postController.getAllPosts.bind(postController));
-router.post("/", validate(PostSchema), postController.createPost.bind(postController));
+router.post("/", validateBody(PostSchema), postController.createPost.bind(postController));
+router.delete("/:id", validateParams(PostIdSchema), postController.deletePost.bind(postController));
 
 export default router;

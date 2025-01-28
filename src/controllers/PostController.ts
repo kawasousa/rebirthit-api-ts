@@ -17,8 +17,20 @@ export default class PostController {
         const { isAdvanced, content, profileId } = req.body;
 
         try {
-            const post = await this.postService.createPost(isAdvanced, content, profileId);
+            const post = await this.postService.createPost(content, profileId);
             res.status(201).json(post);
+
+        } catch (err: any) {
+            res.status(400).json({ error: err.errors })
+        }
+    }
+
+    public async deletePost(req: Request, res: Response) {
+        const { id } = req.params;
+
+        try {
+            const post = await this.postService.deletePost(id);
+            res.status(200).json(post);
 
         } catch (err: any) {
             res.status(400).json({ error: err.errors })

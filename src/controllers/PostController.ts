@@ -13,4 +13,15 @@ export default class PostController {
         res.status(200).json(response);
     }
 
+    public async createPost(req: Request, res: Response): Promise<void> {
+        const { isAdvanced, content, profileId } = req.body;
+
+        try {
+            const post = await this.postService.createPost(isAdvanced, content, profileId);
+            res.status(201).json(post);
+
+        } catch (err: any) {
+            res.status(400).json({ error: err.errors })
+        }
+    }
 }

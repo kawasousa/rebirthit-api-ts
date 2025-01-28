@@ -7,25 +7,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum InteractionType {
+  Like
+  Deslike
+  Laugh
+  Surprise
+}
+
 model Post {
-  id        String   @id @default(uuid())
-  content   String
-  profileId String
-  isAdvanced  Boolean
-  createdAt DateTime @default(now())
-  profile   Profile  @relation(fields: [profileId], references: [id])
+  id           String        @id @default(uuid())
+  content      String
+  profileId    String
+  createdAt    DateTime      @default(now())
+  profile      Profile       @relation(fields: [profileId], references: [id])
+  advancedPost AdvancedPost?
+}
+
+model AdvancedPost {
+  id           String        @id @default(uuid())
+  postId       String        @unique
+  interactions Interaction[]
+
+  post Post @relation(fields: [postId], references: [id])
 }
 
 model Profile {
-  id        String  @id @default(uuid())
-  nickname  String  @unique
-  email     String  @unique
-  photo_url String
-  password  String
+  id          String   @id @default(uuid())
+  nickname    String   @unique
+  email       String   @unique
+  photo_url   String
+  password    String
   isActivated Boolean
   isAdvanced  Boolean
-  posts     Post[]
-  createdAt DateTime @default(now())
+  posts       Post[]
+  createdAt   DateTime @default(now())
 
   sentRequests     ProfileFriendship[] @relation("sentRequests")
   receivedRequests ProfileFriendship[] @relation("receivedRequests")
@@ -40,4 +55,11 @@ model ProfileFriendship {
   friend  Profile @relation("receivedRequests", fields: [friendId], references: [id])
 
   @@id([profileId, friendId])
+}
+
+model Interaction {
+  id             String          @id @default(uuid())
+  type           InteractionType
+  advancedPostId String
+  advancedPost   AdvancedPost    @relation(fields: [advancedPostId], references: [id])
 }

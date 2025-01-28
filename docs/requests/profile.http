@@ -1,0 +1,13 @@
+GET http://localhost:3000/profiles/
+
+POST http://localhost:3000/profiles/
+Content-Type: application/json
+
+{
+   "nickname": "mynickname",
+   "email": "example@gmail.com",
+   "password": "RandomPassword",
+   "photo_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd9fr8LkCGlW_LkUGDGFF_nrSBwk0uIa318Q&s",
+   "isActivated": true, 
+   "isAdvanced": false 
+}

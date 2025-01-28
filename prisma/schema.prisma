@@ -10,9 +10,9 @@ datasource db {
 model Post {
   id        String   @id @default(uuid())
   content   String
-  createdAt DateTime @default(now())
   profileId String
-  advanced  Boolean
+  isAdvanced  Boolean
+  createdAt DateTime @default(now())
   profile   Profile  @relation(fields: [profileId], references: [id])
 }
 
@@ -22,9 +22,10 @@ model Profile {
   email     String  @unique
   photo_url String
   password  String
-  activated Boolean
-  advanced  Boolean
+  isActivated Boolean
+  isAdvanced  Boolean
   posts     Post[]
+  createdAt DateTime @default(now())
 
   sentRequests     ProfileFriendship[] @relation("sentRequests")
   receivedRequests ProfileFriendship[] @relation("receivedRequests")

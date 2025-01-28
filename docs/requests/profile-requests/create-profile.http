@@ -1,5 +1,3 @@
-GET http://localhost:3000/profiles/
-
 POST http://localhost:3000/profiles/
 Content-Type: application/json
 

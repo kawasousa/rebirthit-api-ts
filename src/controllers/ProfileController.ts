@@ -8,7 +8,7 @@ export default class ProfileController{
         this.profileService = new ProfileService();
     }
 
-    public async getAllProfile(req: Request, res: Response): Promise<void>{
+    public async getAllProfiles(req: Request, res: Response): Promise<void>{
         const response = await this.profileService.findAllProfiles();
         res.status(200).json(response);
     }
@@ -28,7 +28,7 @@ export default class ProfileController{
             res.status(201).json(profile);
 
         } catch (error: any) {
-            res.status(400).json({error: error.erros})
+            res.status(400).json({message: `An user with this ${error.meta.target} already exists.`})
         }
     }
 }

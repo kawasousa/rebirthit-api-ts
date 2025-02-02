@@ -1,0 +1,11 @@
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+Cookie: YOUR COOKIE HERE
+
+{
+   "username": "jhondoe",
+   "password": "mypassword",
+   "name": "Jhon",
+   "icon": "user-ninja",
+   "role": "Default"
+}

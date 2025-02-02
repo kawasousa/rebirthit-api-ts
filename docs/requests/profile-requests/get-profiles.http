@@ -1,1 +1,2 @@
-GET http://localhost:3000/profiles/
+GET http://localhost:3000/profiles
+Cookie: YOUR_COOKIE_HERE

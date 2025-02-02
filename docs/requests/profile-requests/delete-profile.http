@@ -1,0 +1,3 @@
+// Delete a profile
+DELETE  http://localhost:3000/profiles/dee06ec4-bf75-4155-a0a5-6844e705b230
+Cookie: YOUR COOKIE HERE

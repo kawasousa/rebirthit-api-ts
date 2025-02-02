@@ -1,9 +1,9 @@
 ## Create post
 POST http://localhost:3000/posts/
 Content-Type: application/json
+Cookie: YOUR_COOKIE_HERE
 
 {
-    "profileId": "0224e016-1d31-4c74-9e96-61a01263b143",
-    "content": "This is my second post!",
-    "isAdvanced": false
+    "username": "jhondoe",
+    "content": "My first post!"
 }

@@ -1,7 +1,7 @@
 import prisma from "../../prisma/client";
 import bcrypt from 'bcrypt';
 import jwt from '../utils/token'
-import { ProfileDTO } from "../models/ProfileDTIO";
+import { ProfileDTO } from "../models/ProfileDTO";
 
 export enum Role {
     Default = "Default",

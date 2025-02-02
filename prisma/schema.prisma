@@ -14,31 +14,28 @@ enum InteractionType {
   Surprise
 }
 
+enum Role {
+  Default
+  Admin
+}
+
 model Post {
   id           String        @id @default(uuid())
   content      String
   profileId    String
   createdAt    DateTime      @default(now())
-  profile      Profile       @relation(fields: [profileId], references: [id])
-  advancedPost AdvancedPost?
-}
-
-model AdvancedPost {
-  id           String        @id @default(uuid())
-  postId       String        @unique
+  profile      Profile       @relation(fields: [profileId], references: [id], onDelete: Cascade) 
   interactions Interaction[]
-
-  post Post @relation(fields: [postId], references: [id])
 }
 
 model Profile {
   id          String   @id @default(uuid())
-  nickname    String   @unique
-  email       String   @unique
-  photo_url   String
+  username    String   @unique
+  name        String
+  icon        String
   password    String
-  isActivated Boolean
-  isAdvanced  Boolean
+  role        Role
+  isActivated Boolean @default(true)
   posts       Post[]
   createdAt   DateTime @default(now())
 
@@ -51,8 +48,8 @@ model ProfileFriendship {
   friendId  String
   createAt  DateTime @default(now())
 
-  profile Profile @relation("sentRequests", fields: [profileId], references: [id])
-  friend  Profile @relation("receivedRequests", fields: [friendId], references: [id])
+  profile Profile @relation("sentRequests", fields: [profileId], references: [id], onDelete: Cascade)
+  friend  Profile @relation("receivedRequests", fields: [friendId], references: [id], onDelete: Cascade)
 
   @@id([profileId, friendId])
 }
@@ -60,6 +57,6 @@ model ProfileFriendship {
 model Interaction {
   id             String          @id @default(uuid())
   type           InteractionType
-  advancedPostId String
-  advancedPost   AdvancedPost    @relation(fields: [advancedPostId], references: [id])
+  postId String
+  post   Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
 }

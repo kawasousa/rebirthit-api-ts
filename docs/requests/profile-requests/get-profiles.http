@@ -1,2 +1,5 @@
-GET http://localhost:3000/profiles
-Cookie: YOUR_COOKIE_HERE
+@BASEURL = {{${{$dotenv BACKEND_URL}}}}
+@COOKIE = ""
+
+GET {{BASEURL}}/profiles
+Cookie: {{COOKIE}}

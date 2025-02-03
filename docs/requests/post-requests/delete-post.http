@@ -1,2 +1,5 @@
-DELETE http://localhost:3000/posts/POST_ID
-Cookie: YOUR COOKIE HERE
+@BASEURL = {{${{$dotenv BACKEND_URL}}}}
+@COOKIE = ""
+
+DELETE {{BASEURL}}/posts/POST_ID
+Cookie: {{COOKIE}}

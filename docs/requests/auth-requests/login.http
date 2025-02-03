@@ -1,6 +1,7 @@
-POST http://localhost:3000/auth/login
+@BASEURL = {{${{$dotenv BACKEND_URL}}}}
+
+POST {{BASEURL}}/auth/login
 Content-Type: application/json
-Cookie: YOUR COOKIE HERE
 
 {
     "username": "jhondoe",

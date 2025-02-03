@@ -1,4 +1,7 @@
 ### Get posts
-GET http://localhost:3000/posts/
+@BASEURL = {{${{$dotenv BACKEND_URL}}}}
+@COOKIE = ""
+
+GET {{BASEURL}}/posts/
 Content-Type: application/json
-Cookie: YOUR COOKIE HERE
+Cookie: {{COOKIE}}

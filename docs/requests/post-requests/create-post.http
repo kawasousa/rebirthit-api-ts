@@ -1,7 +1,10 @@
 ## Create post
-POST http://localhost:3000/posts/
+@BASEURL = {{${{$dotenv BACKEND_URL}}}}
+@COOKIE = ""
+
+POST {{BASEURL}}/posts/
 Content-Type: application/json
-Cookie: YOUR_COOKIE_HERE
+Cookie: {{COOKIE}}
 
 {
     "username": "jhondoe",

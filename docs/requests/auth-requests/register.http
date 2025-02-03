@@ -1,11 +1,12 @@
-POST http://localhost:3000/auth/register
+@BASEURL = {{${{$dotenv BACKEND_URL}}}}
+
+POST {{BASEURL}}/auth/register
 Content-Type: application/json
-Cookie: YOUR COOKIE HERE
 
 {
-   "username": "jhondoe",
-   "password": "mypassword",
-   "name": "Jhon",
-   "icon": "user-ninja",
-   "role": "Default"
+   "username": "kawasousa",
+   "password": "KawaSousa3",
+   "name": "Kawã Sousa",
+   "icon": "chess-king",
+   "role": "Admin"
 }

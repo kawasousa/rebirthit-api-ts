@@ -41,7 +41,7 @@ export default class AuthController {
 
             res.status(200).json({ profileDTO })
         } catch (error: any) {
-            res.status(400).json({ error: "Invalid credentials" })
+            res.status(400).json({ error: "Invalid credentials: " + error.message })
         }
     }
 

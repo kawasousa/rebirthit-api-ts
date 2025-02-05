@@ -2,7 +2,7 @@ import { ZodSchema } from 'zod'
 import { Request, Response, NextFunction } from 'express'
 
 export function validateBody(schema: ZodSchema) {
-    return function(req: Request, res: Response, next: NextFunction) {
+    return function (req: Request, res: Response, next: NextFunction) {
         try {
             schema.parse(req.body);
             next();
@@ -13,12 +13,12 @@ export function validateBody(schema: ZodSchema) {
 }
 
 export function validateParams(schema: ZodSchema) {
-    return function(req: Request, res: Response, next: NextFunction) {
+    return function (req: Request, res: Response, next: NextFunction) {
         try {
             schema.parse(req.params);
             next();
-        } catch (err: any) {
-            res.status(400).json({ error: err.errors })
+        } catch (error: any) {
+            res.status(400).json(error.errors)
         }
     }
 }

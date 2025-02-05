@@ -20,12 +20,32 @@ enum Role {
 }
 
 model Post {
-  id           String        @id @default(uuid())
-  content      String
-  profileId    String
-  createdAt    DateTime      @default(now())
-  profile      Profile       @relation(fields: [profileId], references: [id], onDelete: Cascade) 
+  id        String   @id @default(uuid())
+  content   String
+  profileId String
+  createdAt DateTime @default(now())
+
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+model AdvancedPost {
+  id        String   @id @default(uuid())
+  content   String
+  profileId String
+  createdAt DateTime @default(now())
+
   interactions Interaction[]
+  profile      Profile       @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+model Interaction {
+  id             String          @id @default(uuid())
+  type           InteractionType
+  advancedPostId String
+  authorId       String
+
+  advancedPost AdvancedPost @relation(fields: [advancedPostId], references: [id], onDelete: Cascade)
+  author       Profile      @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
 
 model Profile {
@@ -35,10 +55,12 @@ model Profile {
   icon        String
   password    String
   role        Role
-  isActivated Boolean @default(true)
-  posts       Post[]
+  isActivated Boolean  @default(true)
   createdAt   DateTime @default(now())
 
+  posts            Post[]
+  advancedPosts    AdvancedPost[]
+  interactions     Interaction[]
   sentRequests     ProfileFriendship[] @relation("sentRequests")
   receivedRequests ProfileFriendship[] @relation("receivedRequests")
 }
@@ -52,11 +74,4 @@ model ProfileFriendship {
   friend  Profile @relation("receivedRequests", fields: [friendId], references: [id], onDelete: Cascade)
 
   @@id([profileId, friendId])
-}
-
-model Interaction {
-  id             String          @id @default(uuid())
-  type           InteractionType
-  postId String
-  post   Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
 }

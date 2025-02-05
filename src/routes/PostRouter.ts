@@ -16,6 +16,7 @@ const PostIdSchema = z.object({id: z.string().uuid()})
 
 router.get("/", jwt.validateToken, postController.getAllPosts.bind(postController));
 router.post("/", jwt.validateToken, validateBody(PostSchema), postController.createPost.bind(postController));
+router.post("/advanced", jwt.validateToken, validateBody(PostSchema), postController.createAdvancedPost.bind(postController));
 router.delete("/:id", jwt.validateToken, validateParams(PostIdSchema), postController.deletePost.bind(postController));
 
 export default router;

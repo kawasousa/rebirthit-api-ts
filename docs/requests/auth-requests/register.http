@@ -6,7 +6,7 @@ Content-Type: application/json
 {
    "username": "kawasousa",
    "password": "KawaSousa3",
-   "name": "Kawã Sousa",
+   "name": "Kawã Sousa - Dev",
    "icon": "chess-king",
    "role": "Admin"
 }

@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
-import PostService from "../services/PostService";
+import { NextFunction, Request, Response } from 'express';
+import PostService from '../services/PostService';
+import { BadRequestError } from '../errors';
 
 export default class PostController {
     private postService: PostService;
@@ -8,60 +9,68 @@ export default class PostController {
         this.postService = new PostService();
     }
 
-    public async getAllPosts(req: Request, res: Response): Promise<void> {
-        const response = await this.postService.findAllPosts();
-        res.status(200).json(response);
+    public async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const posts = await this.postService.getAll();
+            res.status(200).json(posts);
+        } catch (error) {
+            next(error);
+        }
     }
 
-    public async createPost(req: Request, res: Response): Promise<void> {
-        const { content, username } = req.body;
-
-        if (!content || !username) {
-            res.status(404).json({ error: "Required fields missing" })
-            return;
-        }
+    public async create(req: Request, res: Response, next: NextFunction): Promise<void> {
+        const { title, content, username } = req.body;
 
         try {
-            const postDTO = await this.postService.createPost(content, username);
+            if (!content) throw new BadRequestError('content not provided');
+            if (!username) throw new BadRequestError('username not provided');
 
-            res.status(201).json(postDTO);
+            const post = await this.postService.create(content, username, title);
+            res.status(201).json(post);
         } catch (error: any) {
-            console.log(error);
-            res.status(404).json({ error: error.errors })
+            next(error)
         }
     }
 
-    public async createAdvancedPost(req: Request, res: Response): Promise<void> {
-        const { content, username } = req.body;
-
-        if (!content || !username) {
-            res.status(404).json({ error: "Required fields missing" })
-            return;
-        }
+    public async createAdvanced(req: Request, res: Response, next: NextFunction): Promise<void> {
+        const { content, username, title } = req.body;
 
         try {
-            const advancedPostDTO = await this.postService.createPost(content, username);
-            res.status(201).json(advancedPostDTO);
+            if (!content) throw new BadRequestError('content not provided');
+            if (!username) throw new BadRequestError('username not provided');
+
+            const advancedPost = await this.postService.createAdvanced(content, username, title);
+            res.status(201).json(advancedPost);
         } catch (error: any) {
-            console.log(error);
-            res.status(404).json({ error: error.errors })
+            next(error)
         }
     }
 
-    public async deletePost(req: Request, res: Response): Promise<void> {
+    public async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
         const { id } = req.params;
         const { requestingUsername } = req.body;
 
         try {
-            if (!id || !requestingUsername) throw new Error('post id and requesting username is required to delete a post');
+            if (!requestingUsername) throw new BadRequestError('requestingUsername not provided');
 
-            await this.postService.deletePost(id, requestingUsername);
-            res.status(204).json({ status: 'sucess' });
-
+            await this.postService.delete(id, requestingUsername);
+            res.status(204).end();
         } catch (error: any) {
-            console.log(error);
+            next(error);
+        }
+    }
 
-            res.status(400).json({ status: 'failure', error: error.errors })
+    public async deleteAdvanced(req: Request, res: Response, next: NextFunction) {
+        const { id } = req.params;
+        const { requestingUsername } = req.body;
+
+        try {
+            if (!requestingUsername) throw new BadRequestError('requestingUsername not provided');
+
+            await this.postService.deleteAdvanced(id, requestingUsername);
+            res.status(204).end();
+        } catch (error: any) {
+            next(error);
         }
     }
 }

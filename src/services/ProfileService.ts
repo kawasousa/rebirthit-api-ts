@@ -1,40 +1,44 @@
-import prisma from "../../prisma/client";
-import { ProfileDTO } from "../models/ProfileDTO";
+import prisma from '../config/prisma';
+import { NotFoundError } from '../errors';
+import { Profile } from '../models/Profile';
 
 export default class ProfileService {
-    public async findAllProfiles(): Promise<ProfileDTO[]> {
+    public async getAll(): Promise<Profile[]> {
         const profiles = await prisma.profile.findMany();
-        const profileDTOs: ProfileDTO[] = [];
-        
-        for(const profile of profiles){
-            const postsCount = await prisma.post.count({where: {profileId: profile.id}});
-            console.log(postsCount)
+        const profileDTOs: Profile[] = [];
 
-            const profileDTO = new ProfileDTO(profile.username, profile.name, profile.icon, profile.role, postsCount);
+        for (const profile of profiles) {
+            const postsCount = await prisma.post.count({ where: { profileId: profile.id } });
+
+            const profileDTO: Profile = new Profile(profile.username, profile.email, profile.name, profile.icon, profile.role, postsCount);
             profileDTOs.push(profileDTO);
         }
 
         return profileDTOs;
     }
 
-    public async findProfileById(id: string): Promise<ProfileDTO | null> {
+    public async getById(id: string): Promise<Profile | null> {
         const profile = await prisma.profile.findUnique({
             where: { id }
         })
 
-        if(profile){
-            const postsCount = await prisma.post.count({where: {profileId: profile.id}});
+        if(!profile) throw new NotFoundError('profile not found')
 
-            const profileDIO: ProfileDTO = new ProfileDTO(profile.username, profile.name, profile.icon, profile.role, postsCount);
-            return profileDIO;
-        }
+        const postsCount = await prisma.post.count({ where: { profileId: profile.id } });
+        const advancedPostCount = await prisma.advancedPost.count({ where: { profileId: profile.id } });
+        const totalPostsCount = advancedPostCount + postsCount;
 
-        return null;
+        const profileDIO: Profile = new Profile(profile.username, profile.email, profile.name, profile.icon, profile.role, totalPostsCount);
+        return profileDIO;
     }
-    
-    public async deleteProfile(id: string) {
-        return prisma.profile.delete({
-            where: { id: id }
+
+    public async delete(username: string) {
+        const profile = await prisma.profile.findUnique({where: {username}});
+
+        if(!profile) throw new NotFoundError('profile not found');
+
+        await prisma.profile.delete({
+            where: { id: profile.id }
         })
     }
 }

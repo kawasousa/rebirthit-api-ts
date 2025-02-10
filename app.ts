@@ -1,10 +1,13 @@
 import express from 'express'
 import dotenv from 'dotenv'
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import PostRouter from "./src/routes/PostRouter"
 import ProfileRouter from "./src/routes/ProfileRouter"
 import AuthRouter from './src/routes/AuthRouter'
-import cors from 'cors'
-import cookieParser from 'cookie-parser'
+import FriendshipRouter from './src/routes/FriendshipRouter'
+import InteractionRouter from './src/routes/InteractionRouter'
+import { errorMiddleware } from './src/middlewares/errorMiddleware'
 
 dotenv.config();
 
@@ -27,5 +30,9 @@ declare module "express-serve-static-core" {
 app.use("/posts", PostRouter);
 app.use("/profiles", ProfileRouter);
 app.use("/auth", AuthRouter)
+app.use("/friendships", FriendshipRouter);
+app.use("/interactions", InteractionRouter);
+
+app.use(errorMiddleware);
 
 export default app;

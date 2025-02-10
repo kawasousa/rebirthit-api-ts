@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import ProfileService from "../services/ProfileService";
-import { ProfileDTO } from "../models/ProfileDTO";
+import { NextFunction, Request, Response } from 'express';
+import ProfileService from '../services/ProfileService';
+import { Profile } from '../models/Profile';
 
 export default class ProfileController {
     private profileService: ProfileService;
@@ -9,19 +9,23 @@ export default class ProfileController {
         this.profileService = new ProfileService();
     }
 
-    public async getAllProfiles(req: Request, res: Response): Promise<void> {
-        const profiles: ProfileDTO[] = await this.profileService.findAllProfiles();
-        res.status(200).json({profiles});
+    public async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const profiles: Profile[] = await this.profileService.getAll();
+            res.status(200).json(profiles);
+        } catch (error) {
+            next(error);
+        }
     }
 
-    public async deleteProfile(req: Request, res: Response): Promise<void> {
-        const { id } = req.params;
-        const user = this.profileService.deleteProfile(id);
+    public async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
+        const { username } = req.params;
 
-        if(!user){
-            res.status(204).json({status: "failure"});
+        try {
+            await this.profileService.delete(username);
+            res.status(204).end();
+        } catch (error) {
+            next(error);
         }
-
-        res.status(204).json({status: "sucess"});
     }
 }

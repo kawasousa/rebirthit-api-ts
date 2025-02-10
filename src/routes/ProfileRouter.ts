@@ -1,15 +1,11 @@
 import { Router } from "express";
 import ProfileController from "../controllers/ProfileController";
-import jwt from '../utils/token'
-import {z} from 'zod'
-import { validateParams } from '../utils/schemaValidate'
+import jwt from '../config/jwt'
 
 const router = Router();
 const profileController: ProfileController = new ProfileController();
 
-const idSchema = z.object({id: z.string().uuid()});
-
-router.get("/", jwt.validateToken, profileController.getAllProfiles.bind(profileController));
-router.delete("/:id", validateParams(idSchema), profileController.deleteProfile.bind(profileController));
+router.get("/", jwt.validate, profileController.getAll.bind(profileController));
+router.delete("/:username", profileController.delete.bind(profileController));
 
 export default router;

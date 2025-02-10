@@ -1,75 +1,86 @@
-import { Request, Response } from "express";
-import AuthService, { Role } from "../services/AuthService";
+import { NextFunction, Request, Response } from 'express';
+import AuthService from '../services/AuthService';
+import { Role } from '@prisma/client';
+import { BadRequestError } from '../errors';
 
 export default class AuthController {
     private authService: AuthService;
-
     constructor() {
         this.authService = new AuthService();
     }
 
-    public async login(req: Request, res: Response) {
-        const { username, password } = req.body;
+    public async login(req: Request, res: Response, next: NextFunction) {
+        const { uniqueCredential, password } = req.body;
 
         try {
-            const { profileDTO, token } = await this.authService.login(username, password);
+            if (!uniqueCredential) throw new BadRequestError('uniqueCredential not provided');
+            if (!password) throw new BadRequestError('password not provided');
 
-            res.cookie("auth_token", token, {
+            const { profileDTO, token } = await this.authService.login(uniqueCredential, password);
+
+            const expires = new Date();
+            expires.setDate(expires.getDate() + 1);
+            res.cookie('auth_token', token, {
                 httpOnly: true,
-                sameSite: "none",
+                sameSite: 'none',
+                secure: true,
+                expires
+            })
+
+            res.status(200).json({ profile: profileDTO, message: 'login successful' });
+        } catch (error: any) {
+            next(error);
+        }
+    }
+
+    public async register(req: Request, res: Response, next: NextFunction) {
+        const { username, email, password, name, icon, role } = req.body;
+
+        try {
+            if (!Object.values(Role).includes(role as Role)) throw new BadRequestError('invalid profile role');
+            const profileRole: Role = role as Role;
+
+            const { profileDTO, token } = await this.authService.register(username, email, password, name, icon, profileRole);
+
+            const expires = new Date();
+            expires.setDate(expires.getDate() + 1);
+            res.cookie('auth_token', token, {
+                httpOnly: true,
+                sameSite: 'none',
+                secure: true,
+                expires
+            })
+
+            res.status(201).json({ profile: profileDTO, message: 'registration successful' });
+        } catch (error: any) {
+            next(error);
+        }
+    }
+
+    public async getCurrentProfile(req: Request, res: Response, next: NextFunction) {
+        const aProfile = req.profile;
+
+        try {
+            if (!aProfile) throw new BadRequestError('profile not authenticated')
+
+            const profile = await this.authService.getProfileById(aProfile.profileId);
+            res.status(200).json({ profile })
+        } catch (error: any) {
+            next(error);
+        }
+    }
+
+    public async logout(req: Request, res: Response, next: NextFunction) {
+        try {
+            res.clearCookie('auth_token', {
+                httpOnly: true,
+                sameSite: 'none',
                 secure: true
             })
 
-            res.status(200).json({ profileDTO });
+            res.status(204).end();
         } catch (error: any) {
-            res.status(404).json({ error: error.message })
-        }
-    }
-
-    public async register(req: Request, res: Response) {
-        const { username, password, name, icon, role } = req.body;
-        const profileRole: Role = Role[role as keyof typeof Role];
-
-        try {
-            const { profileDTO, token } = await this.authService.register(username, password, name, icon, profileRole);
-
-            res.cookie("auth_token", token, {
-                httpOnly: true,
-                sameSite: "none",
-                secure: true
-            })
-
-            res.status(200).json({ profileDTO })
-        } catch (error: any) {
-            res.status(400).json({ error: "Invalid credentials: " + error.message })
-        }
-    }
-
-    public async getCurrentProfile(req: Request, res: Response) {
-        try {
-            if (req.profile) {
-                const profile = await this.authService.getProfileById(req.profile.profileId);
-                if (profile)
-                    res.status(200).json({ profile })
-                return;
-            }
-
-            res.status(401).json({ error: "profile not authenticated" });
-        } catch (error: any) {
-            res.status(500).json({ error: error.message });
-        }
-    }
-
-    public async loggout(req: Request, res: Response){
-        try {
-            res.clearCookie("auth_token", {
-                httpOnly: true,
-                sameSite: true
-            })
-
-            res.status(200).json({status: "sucess"})
-        } catch (error) {
-            res.status(400).json({error: "Error when logging out"})
+            next(error)
         }
     }
 }

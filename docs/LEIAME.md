@@ -1,6 +1,9 @@
 # RebirthIt API
 A **API** da rede social RebirthIt, desenvolvida com **TypeScript**, **Express**, **Prisma** e **PostgreSQL**. A API permite a criação, edição, interação e autenticação de perfis, postagens e amizades dentro da plataforma. ([english version](https://github.com/kawasousa/rebirthit-api-ts/blob/main/README.md))
 ## Tecnologias Utilizadas
+![typescript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![express](https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white)
+![jwt](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
 - **TypeScript**: Para garantir tipagem estática e maior segurança no desenvolvimento.
 - **Express**: Framework para construção de APIs em Node.js.
 - **Prisma**: ORM para facilitar a interação com o banco de dados PostgreSQL.
@@ -14,6 +17,10 @@ Antes de executar o projeto, certifique-se de ter as seguintes ferramentas insta
 - **Node.js** (Recomendado: versão 18+)
 - **PostgreSQL** (ou Docker para executar o banco de dados)
 - **Prisma CLI** (Usado para rodar as migrações)
+
+![nodejs](https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
+![postgres](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 ## Estrutura do Projeto
 Aqui está uma visão geral das principais pastas e arquivos do repositório:
 ```bash

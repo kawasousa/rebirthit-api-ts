@@ -1,7 +1,0 @@
-// Delete a profile
-@BASEURL = {{${{$dotenv BACKEND_URL}}}}
-@PROFILEID = ""
-@COOKIE = ""
-
-DELETE  {{BASEURL}}/profiles/{{{{PROFILEID}}}}
-Cookie: {{COOKIE}}

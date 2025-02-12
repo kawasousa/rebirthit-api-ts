@@ -1,5 +1,0 @@
-@BASEURL = {{${{$dotenv BACKEND_URL}}}}
-@COOKIE = ""
-
-GET {{BASEURL}}/profiles
-Cookie: {{COOKIE}}

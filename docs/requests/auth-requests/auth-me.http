@@ -1,6 +1,0 @@
-@BASEURL = {{${{$dotenv BACKEND_URL}}}}
-@COOKIE =""
-
-GET {{BASEURL}}auth/me
-Content-Type: application/json
-Cookie: {{COOKIE}}

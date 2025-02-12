@@ -1,5 +1,0 @@
-@BASEURL = {{${{$dotenv BACKEND_URL}}}}
-@COOKIE = ""
-
-DELETE {{BASEURL}}/posts/POST_ID
-Cookie: {{COOKIE}}

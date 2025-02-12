@@ -1,7 +1,0 @@
-### Get posts
-@BASEURL = {{${{$dotenv BACKEND_URL}}}}
-@COOKIE = ""
-
-GET {{BASEURL}}/posts/
-Content-Type: application/json
-Cookie: {{COOKIE}}

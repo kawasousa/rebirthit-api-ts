@@ -1,22 +1,33 @@
 {
   "name": "rebirthit-api-ts",
   "version": "1.0.0",
-  "description": "",
-  "main": "app.ts",
+  "description": "RebirthIt social network API, developed with TypeScript, Express, Prisma, and PostgreSQL. The API allows manage interaction, and authentication of profiles, posts, and friendships within the platform.",
+  "main": "server.ts",
   "scripts": {
-    "start": "npx ts-node-dev ./server.ts",
+    "start": "tsc && node ./dist/server.js",
     "dev": "npx ts-node-dev ./server.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "api",
+    "social network",
+    "typescript",
+    "express",
+    "prisma",
+    "postgresql",
+    "authentication"
+  ],
+  "author": "Kawã Sousa, Pedro Victor Venâncio",
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.8",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.7",
     "prisma": "^6.3.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.3"
   },

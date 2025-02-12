@@ -1,5 +1,5 @@
 # RebirthIt API
-A **API** da rede social RebirthIt, desenvolvida com **TypeScript**, **Express**, **Prisma** e **PostgreSQL**. A API permite a criação, edição, interação e autenticação de perfis, postagens e amizades dentro da plataforma. ([english version]())
+A **API** da rede social RebirthIt, desenvolvida com **TypeScript**, **Express**, **Prisma** e **PostgreSQL**. A API permite a criação, edição, interação e autenticação de perfis, postagens e amizades dentro da plataforma. ([english version](https://github.com/kawasousa/rebirthit-api-ts/blob/main/README.md))
 ## Tecnologias Utilizadas
 - **TypeScript**: Para garantir tipagem estática e maior segurança no desenvolvimento.
 - **Express**: Framework para construção de APIs em Node.js.

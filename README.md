@@ -44,7 +44,7 @@ rebirthit-api-ts
 ## How to Run the Project
 1. Clone the repository:
 ```bash
-git clone https://github.com/YOUR_USER/rebirthit-api-ts.git &&
+git clone https://github.com/kawasousa/rebirthit-api-ts.git &&
 cd rebirthit-api-ts
 ```
 2. Install the dependencies
@@ -55,7 +55,7 @@ npm install
    - Create a PostgreSQL database.
    - In the `.env` file, define the database connection URL:
 ```env
-DATABASE_URL="postgresql://user:password@localhost:5432/rebirthit"
+DATABASE_URL="postgresql://user:password@localhost:5432/database-name"
 ```
 4. Run Prisma migrations to create the tables:
 ```bash
